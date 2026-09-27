@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>보장비교 | 보험 약관 비교</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="normalization.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="보장비교 홈"><span class="brand-mark">보</span><span>보장비교</span><small>약관 중심</small></a>
+    <div class="top-actions">
+      <span class="sample-pill">샘플 약관 데이터</span>
+      <button class="mode-button active" data-mode="advisor">설계사용</button>
+      <button class="mode-button" data-mode="customer">고객용 보기</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">보험료가 아닌, 실제 보장 구조를 비교합니다</p>
+        <h1>같은 사고라면<br><em>어떻게 지급될까요?</em></h1>
+        <p class="hero-copy">지급방식, 반복 지급, 병원 조건과 제외사항까지. 담보명이나 보험료가 아니라 약관상의 보장 자체를 비교합니다.</p>
+      </div>
+      <div class="hero-note"><b>객관적 비교 원칙</b><span>“더 좋은 보험” 점수화 대신,<br>동일 조건에서의 지급 결과와 약관 근거를 보여드립니다.</span></div>
+    </section>
+
+    <section class="control-panel" aria-label="비교 설정">
+      <div class="field-group wide"><label for="category">비교할 보장</label><select id="category"></select></div>
+      <div class="field-group"><label for="scenario">동일 사고 시나리오</label><select id="scenario"></select></div>
+      <button class="primary-button" id="runScenario">시나리오 비교하기 <span>→</span></button>
+    </section>
+
+    <section class="context-row">
+      <div><span class="dot"></span>선택한 담보 <strong id="selectedTitle"></strong></div>
+      <div class="last-check">기준일: <span id="termsDate"></span> · 샘플 데이터는 실제 상담 전 원문 약관 확인 필요</div>
+    </section>
+
+    <section id="advisorView">
+      <div class="section-heading"><div><p class="eyebrow">설계사용 상세 비교</p><h2>지급 구조를 한눈에 비교</h2></div><button class="text-button" id="showCustomer">고객에게 간단히 보여주기 →</button></div>
+      <div id="comparisonGrid" class="comparison-grid"></div>
+      <div class="table-wrap">
+        <table id="detailsTable"><thead></thead><tbody></tbody></table>
+      </div>
+      <div class="notice"><span>!</span><p><b>읽는 방법</b> · 표의 차이는 유불리 판단이 아니라 약관 조건의 차이입니다. 각 담보의 가입금액, 정의, 약관 원문을 함께 확인해 주세요.</p></div>
+    </section>
+
+    <section id="customerView" hidden>
+      <div class="customer-intro"><p class="eyebrow">고객용 간단 비교</p><h2 id="customerTitle"></h2><p>핵심 보장과 제한 조건만 간단히 정리한 화면입니다.</p></div>
+      <div id="customerCards" class="customer-cards"></div>
+    </section>
+
+    <section id="scenarioSection" class="scenario-section">
+      <div class="scenario-header"><div><p class="eyebrow">동일 사고 시나리오</p><h2 id="scenarioTitle">같은 해 수술 + 항암약물 + 방사선 치료</h2><p id="scenarioDescription"></p></div><span class="scenario-tag">조건 충족 가정</span></div>
+      <div class="timeline" id="timeline"></div>
+      <div id="payoutResults" class="payout-results"></div>
+      <p class="scenario-footnote">※ 가입금액은 비교를 위해 모두 1,000만원으로 가정한 샘플입니다. 실제 지급액은 가입금액, 세부 약관 및 치료 사실에 따라 달라집니다.</p>
+    </section>
+
+    <section class="data-section">
+      <div><p class="eyebrow">약관 데이터 관리 구조</p><h2>나중에 실제 약관을<br>쉽게 추가할 수 있습니다</h2></div>
+      <div class="data-steps">
+        <article><span>01</span><h3>상품·버전 등록</h3><p>보험사, 상품명, 판매 상태, 약관 기준일을 기록합니다.</p></article>
+        <article><span>02</span><h3>담보별 조건 입력</h3><p>치료·수술별 지급 규칙과 제한 조건을 따로 저장합니다.</p></article>
+        <article><span>03</span><h3>원문 근거 연결</h3><p>조항·페이지·원문을 연결해 비교 결과를 검증합니다.</p></article>
+      </div>
+    </section>
+
+    <section class="normalization-section">
+      <div class="section-heading"><div><p class="eyebrow">특약명 정규화 사전</p><h2>이름이 달라도 같은 보장 기능으로 묶습니다</h2></div><span id="insurerCount" class="directory-count"></span></div>
+      <p class="normalization-copy">보험사별 특약명은 후보를 찾는 단서일 뿐입니다. 최종 분류는 반드시 약관의 지급사유·정의·제외조건으로 확정하고, 검증 전 데이터는 비교 결과에 사용하지 않습니다.</p>
+      <div class="normalization-controls"><label>보장 기능 <select id="functionFilter"></select></label><label>보험 업권 <select id="sectorFilter"><option value="all">전체</option><option value="손해보험">손해보험</option><option value="생명보험">생명보험</option></select></label></div>
+      <div id="aliasDirectory" class="alias-directory"></div>
+      <p class="directory-note">※ 회사 목록은 입력 대상 카탈로그입니다. 각 회사의 판매 상품·특약·약관 기준일은 별도 검증 후 등록해야 합니다.</p>
+    </section>
+
+    <section class="upload-panel">
+      <div><p class="eyebrow">향후 기능 준비</p><h2>고객 보장분석 PDF 불러오기</h2><p>현재는 파일을 저장하지 않습니다. 향후 보험사·상품명·가입일·담보명·가입금액을 식별해 기존 담보와 약관 DB를 연결할 수 있도록 설계했습니다.</p></div>
+      <label class="upload-button" for="pdfUpload">PDF 선택 <input id="pdfUpload" type="file" accept="application/pdf" hidden></label>
+      <p id="uploadStatus" class="upload-status">개인정보는 이 샘플 앱에 저장되지 않습니다.</p>
+    </section>
+  </main>
+  <footer>보장비교 v1 샘플 · 보험료 비교 및 상품 추천 기능을 제공하지 않습니다.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
